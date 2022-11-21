@@ -48,13 +48,18 @@ public final class Main {
         final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
 
         FirstNameInputField.sendKeys(getFirstName());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         LastNameInputField.sendKeys(getLastName());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         if (isShouldUseRewardsID())
             OptionalRewardsIDInputField.sendKeys(RewardsID);
         else System.out.println("No Rewards ID was used");
         PhoneNumberInputField.sendKeys(getPhoneNumber());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         EmailInputField.sendKeys(getEmailAddress());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         PasswordInputField.sendKeys(getPassword());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
 
         SignUpButton.click();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
