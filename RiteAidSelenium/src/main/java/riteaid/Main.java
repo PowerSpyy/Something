@@ -2,6 +2,7 @@ package riteaid;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -23,14 +24,7 @@ public final class Main {
 
     public static  void main(String[] args) {
         //resetInfo(); //doesn't work yet
-        //get the auto driver setup
-        WebDriverManager.firefoxdriver().setup();
-
-        //block geo tracking for firefox
-        FirefoxOptions options = new FirefoxOptions()
-                .addPreference("geo.enabled", false);
-
-        WebDriver driver = new FirefoxDriver(options);
+        WebDriver driver = geckoDriver();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
@@ -54,6 +48,7 @@ public final class Main {
         if (isShouldUseRewardsID())
             OptionalRewardsIDInputField.sendKeys(RewardsID);
         else System.out.println("No Rewards ID was used");
+        PhoneNumberInputField.click();
         PhoneNumberInputField.sendKeys(getPhoneNumber());
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         EmailInputField.sendKeys(getEmailAddress());
@@ -71,6 +66,11 @@ public final class Main {
 
         driver.quit();
         System.out.println("Done!");
+    }
+
+    public static WebDriver geckoDriver() {
+        WebDriverManager.firefoxdriver().setup();
+        return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false));
     }
 
     //getters and setters
