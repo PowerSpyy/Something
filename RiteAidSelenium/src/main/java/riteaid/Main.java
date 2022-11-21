@@ -12,7 +12,7 @@ import java.time.Duration;
 import static riteaid.Util.GenerateEmailAddress;
 import static riteaid.Util.GeneratePhoneNumber;
 
-public class Main {
+public final class Main {
     private static String FirstName = "fewa";
     private static String LastName = "awef";
     private static String RewardsID = "";
