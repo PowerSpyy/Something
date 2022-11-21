@@ -117,24 +117,24 @@ public final class Main {
     public static void resetInfo(EmailEndings ending) throws Exception {
         switch (ending) {
             case MAIL -> {
-                setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@mail.com"));
+                //setPhoneNumber(GeneratePhoneNumber());
+                //setEmailAddress(GenerateEmailAddress("@mail.com"));
             }
             case GMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@gmail.com"));
+                //setPhoneNumber(GeneratePhoneNumber());
+                //setEmailAddress(GenerateEmailAddress("@gmail.com"));
             }
             case HOTMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@hotmail.com"));
+                //setPhoneNumber(GeneratePhoneNumber());
+                //setEmailAddress(GenerateEmailAddress("@hotmail.com"));
             }
             case YAHOO -> {
-                setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@yahoo.com"));
+                //setPhoneNumber(GeneratePhoneNumber());
+                //setEmailAddress(GenerateEmailAddress("@yahoo.com"));
             }
             case OUTLOOK -> {
-                setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@outlook.com"));
+                //setPhoneNumber(GeneratePhoneNumber());
+                //setEmailAddress(GenerateEmailAddress("@outlook.com"));
             }
             default -> {
                 System.out.println("Cannot find " + ending.toString() + " in Enum \"EmailEndings.java\"");
