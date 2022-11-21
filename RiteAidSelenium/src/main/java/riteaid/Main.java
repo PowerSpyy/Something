@@ -118,23 +118,23 @@ public final class Main {
         switch (ending) {
             case MAIL -> {
                 //setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@mail.com"));
+                //setEmailAddress(GenerateEmailAddress("@mail.com"));
             }
             case GMAIL -> {
                 //setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@gmail.com"));
+                //setEmailAddress(GenerateEmailAddress("@gmail.com"));
             }
             case HOTMAIL -> {
                 //setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@hotmail.com"));
+                //setEmailAddress(GenerateEmailAddress("@hotmail.com"));
             }
             case YAHOO -> {
                 //setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@yahoo.com"));
+                //setEmailAddress(GenerateEmailAddress("@yahoo.com"));
             }
             case OUTLOOK -> {
                 //setPhoneNumber(GeneratePhoneNumber());
-                setEmailAddress(GenerateEmailAddress("@outlook.com"));
+                //setEmailAddress(GenerateEmailAddress("@outlook.com"));
             }
             default -> {
                 System.out.println("Cannot find " + ending.toString() + " in Enum \"EmailEndings.java\"");

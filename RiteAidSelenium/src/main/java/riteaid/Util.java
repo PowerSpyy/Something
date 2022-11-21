@@ -7,9 +7,7 @@ public final class Util {
     public static long GeneratePhoneNumber(long seed, long p) {
         //int p = 9999991;
         int offset = 69420;
-        long a = (offset + seed) % p;
-
-        assert a != 0;
+        long a = ((offset + seed) % (p - 1)) + 1;
 
         ArrayList<Long> integers = new ArrayList<Long>();
         integers.add(p);
@@ -33,8 +31,13 @@ public final class Util {
 
     }
 
-    @Todo
-    public static String GenerateEmailAddress(String ending) {
-        return ending;
+    public static String GenerateEmailAddress(String ending, int seed) {
+            String[] adj = {"red", "orange", "yellow", "green", "blue", "purple", "black", "white", "happy", "sad", "the"};
+
+            String[] noun = {"panda", "bird", "dog", "cat", "fish", "cow", "bear", "shirt", "pants", "house", "people", "chicken", "ant", "thing", "coffee", "rock"};
+
+            assert seed < adj.length * noun.length;
+
+            return adj[seed % adj.length] + noun[seed / adj.length] + ending;
     }
 }
