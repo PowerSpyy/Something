@@ -117,23 +117,23 @@ public final class Main {
     public static void resetInfo(EmailEndings ending) throws Exception {
         switch (ending) {
             case MAIL -> {
-                setPhoneNumber(GeneratePhoneNumber());
+                //setPhoneNumber(GeneratePhoneNumber());
                 setEmailAddress(GenerateEmailAddress("@mail.com"));
             }
             case GMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber());
+                //setPhoneNumber(GeneratePhoneNumber());
                 setEmailAddress(GenerateEmailAddress("@gmail.com"));
             }
             case HOTMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber());
+                //setPhoneNumber(GeneratePhoneNumber());
                 setEmailAddress(GenerateEmailAddress("@hotmail.com"));
             }
             case YAHOO -> {
-                setPhoneNumber(GeneratePhoneNumber());
+                //setPhoneNumber(GeneratePhoneNumber());
                 setEmailAddress(GenerateEmailAddress("@yahoo.com"));
             }
             case OUTLOOK -> {
-                setPhoneNumber(GeneratePhoneNumber());
+                //setPhoneNumber(GeneratePhoneNumber());
                 setEmailAddress(GenerateEmailAddress("@outlook.com"));
             }
             default -> {
