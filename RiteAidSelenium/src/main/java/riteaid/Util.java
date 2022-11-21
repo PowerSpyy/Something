@@ -1,15 +1,14 @@
 package riteaid;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public final class Util {
-    public static long GeneratePhoneNumber(long seed, long p) {
+    public static String GeneratePhoneNumber(long seed, long p, String areaCode) {
         //int p = 9999991;
         int offset = 69420;
         long a = ((offset + seed) % (p - 1)) + 1;
 
-        ArrayList<Long> integers = new ArrayList<Long>();
+        ArrayList<Long> integers = new ArrayList<>();
         integers.add(p);
         integers.add(a);
 
@@ -27,7 +26,7 @@ public final class Util {
             i = tmp;
         }
 
-        return (j + p) % p;
+        return areaCode + (j + p) % p;
 
     }
 

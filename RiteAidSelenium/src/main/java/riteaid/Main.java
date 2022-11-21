@@ -2,7 +2,6 @@ package riteaid;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -10,19 +9,17 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
 
-import static riteaid.Util.GenerateEmailAddress;
-import static riteaid.Util.GeneratePhoneNumber;
-
 public final class Main {
     private static String FirstName = "fewa";
     private static String LastName = "awef";
     private static String RewardsID = "";
     private static boolean ShouldUseRewardsID = false;
-    private static String PhoneNumber = "~8589039139";//first character is ignored for some reason
+    private static String PhoneNumber = "8589039139";//first character is ignored for some reason
     private static String EmailAddress = "JohnnyD123@gmail.com"; //temp
     private static final String Password = "Fewa123!";
 
     public static  void main(String[] args) {
+        //setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
         //resetInfo(); //doesn't work yet
         WebDriver driver = geckoDriver();
 
@@ -49,7 +46,7 @@ public final class Main {
             OptionalRewardsIDInputField.sendKeys(RewardsID);
         else System.out.println("No Rewards ID was used");
         PhoneNumberInputField.click();
-        PhoneNumberInputField.sendKeys(getPhoneNumber());
+        PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         EmailInputField.sendKeys(getEmailAddress());
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
@@ -62,7 +59,7 @@ public final class Main {
 
         //end
         try {Thread.sleep(1000);}
-        catch (InterruptedException e) {System.out.println(e);}
+        catch (InterruptedException e) {}
 
         driver.quit();
         System.out.println("Done!");
@@ -71,6 +68,32 @@ public final class Main {
     public static WebDriver geckoDriver() {
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false));
+    }
+
+    public static void PhoneNumberSendKeys(WebElement PhoneNumberInputField, String message) {
+        String uno = Character.toString(message.charAt(0));
+        String dos = Character.toString(message.charAt(1));
+        String tres = Character.toString(message.charAt(2));
+        String cuatro = Character.toString(message.charAt(3));
+        String cinco = Character.toString(message.charAt(4));
+        String seis = Character.toString(message.charAt(5));
+        String siete = Character.toString(message.charAt(6));
+        String ocho = Character.toString(message.charAt(7));
+        String neuve = Character.toString(message.charAt(8));
+        String diaz = Character.toString(message.charAt(9));
+
+        PhoneNumberInputField.click();
+        PhoneNumberInputField.sendKeys("(");
+        PhoneNumberInputField.sendKeys(uno);
+        PhoneNumberInputField.sendKeys(dos);
+        PhoneNumberInputField.sendKeys(tres);
+        PhoneNumberInputField.sendKeys(cuatro);
+        PhoneNumberInputField.sendKeys(cinco);
+        PhoneNumberInputField.sendKeys(seis);
+        PhoneNumberInputField.sendKeys(siete);
+        PhoneNumberInputField.sendKeys(ocho);
+        PhoneNumberInputField.sendKeys(neuve);
+        PhoneNumberInputField.sendKeys(diaz);
     }
 
     //getters and setters
@@ -137,7 +160,7 @@ public final class Main {
                 //setEmailAddress(GenerateEmailAddress("@outlook.com"));
             }
             default -> {
-                System.out.println("Cannot find " + ending.toString() + " in Enum \"EmailEndings.java\"");
+                System.out.println("Cannot find " + ending + " in Enum \"EmailEndings.java\"");
                 throw new Exception("Not present");
             }
         }
