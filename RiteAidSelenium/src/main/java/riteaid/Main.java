@@ -128,6 +128,7 @@ public class Main {
                 setEmailAddress(GenerateEmailAddress("@outlook.com"));
             }
             default -> {
+                System.out.println("Cannot find " + ending.toString() + " in Enum \"EmailEndings.java\"");
                 throw new Exception("Not present");
             }
         }
