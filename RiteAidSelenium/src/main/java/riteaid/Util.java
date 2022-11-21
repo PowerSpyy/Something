@@ -6,10 +6,9 @@ public final class Util {
     @Todo
     public static String GeneratePhoneNumber() {
         Random random = new Random();
-        String endString = String.valueOf(random.nextInt(790) + 201)
+        return random.nextInt(790) + 201
                          + String.valueOf(random.nextInt(900) + 100)
-                         + String.valueOf(random.nextInt(900) + 100);
-        return endString;
+                         + (random.nextInt(900) + 100);
     }
 
     @Todo

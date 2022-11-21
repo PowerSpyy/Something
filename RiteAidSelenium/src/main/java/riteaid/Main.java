@@ -17,8 +17,8 @@ public final class Main {
     private static String LastName = "awef";
     private static String RewardsID = "";
     private static boolean ShouldUseRewardsID = false;
-    private static String PhoneNumber = "8589039139";
-    private static String EmailAddress;
+    private static String PhoneNumber = "~8589039139";//first character is ignored for some reason
+    private static String EmailAddress = "JohnnyD123@gmail.com"; //temp
     private static final String Password = "Fewa123!";
 
     public static  void main(String[] args) {
@@ -32,7 +32,7 @@ public final class Main {
 
         WebDriver driver = new FirefoxDriver(options);
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         driver.get("https://www.riteaid.com/signup");
 
@@ -55,6 +55,10 @@ public final class Main {
         PhoneNumberInputField.sendKeys(getPhoneNumber());
         EmailInputField.sendKeys(getEmailAddress());
         PasswordInputField.sendKeys(getPassword());
+
+        SignUpButton.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        System.out.println(driver.getTitle());
 
         //end
         try {Thread.sleep(1000);}
