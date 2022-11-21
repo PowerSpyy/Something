@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public final class Util {
-    @Todo
-    public static int GeneratePhoneNumber(int seed, int p) {
+    public static long GeneratePhoneNumber(long seed, long p) {
         //int p = 9999991;
         int offset = 69420;
-        int a = (offset + seed) % p;
+        long a = (offset + seed) % p;
 
-        assert seed != p-offset;
         assert a != 0;
 
-        ArrayList<Integer> integers = new ArrayList<Integer>();
+        ArrayList<Long> integers = new ArrayList<Long>();
         integers.add(p);
         integers.add(a);
 
@@ -21,9 +19,9 @@ public final class Util {
             integers.add(integers.get(counter) % integers.get(counter + 1));
         }
 
-        int i = 1;
-        int j = -(integers.get(integers.size() - 3)/integers.get(integers.size() - 2));
-        int tmp;
+        long i = 1;
+        long j = -(integers.get(integers.size() - 3)/integers.get(integers.size() - 2));
+        long tmp;
 
         for (int counter = integers.size() - 4; counter >= 0; --counter) {
             tmp = j;
