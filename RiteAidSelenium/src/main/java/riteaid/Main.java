@@ -10,7 +10,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import java.io.FileWriter;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static riteaid.Util.*;
 
@@ -49,20 +48,13 @@ public final class Main {
         PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
         EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
 
-        FileWriter file = new FileWriter("./RiteAidSelenium/src/main/data/data.txt", true);
-
-        file.write(getPhoneNumber());
-        file.write(getEmailAddress());
-        file.write("\n");
-        file.close();
-
         /* error when SignUpButton.click():
         Exception in thread "main" org.openqa.selenium.ElementNotInteractableException: Element <button id="sign-up-submit-button" class="sign-up-modal__login-btns__signup
             sign-up-modal__login-btns__signup--submit btn-rounded
             background-green color-white" type="submit"> could not be scrolled into view
          */
 
-        WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
+        final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
 
         //https://riteaid.com/signup#accountcreated <- is the link when pressed button
         //https://www.riteaid.com/ra-dashboard
@@ -71,6 +63,23 @@ public final class Main {
             js.executeScript("window.scrollBy(0, 500)", "");
             Thread.sleep(4000);
             SignUpButton.click();
+            Thread.sleep(4000);
+            if (driver.findElements(By.xpath("/html/body/div[1]/div/div[4]/div/div[1]/div[2]/div[2]/div/div/div/form/div[2]/div[1]/div[1]/div[5]/div/label")).size() == 0) {
+                if (driver.findElements(By.xpath("/html/body/div[1]/div/div[4]/div/div[1]/div[2]/div[2]/div/div/div/form/div[2]/div[1]/div[1]/div[3]/div/label")).size() == 0) {
+                    FileWriter file = new FileWriter("./RiteAidSelenium/src/main/data/data.txt", true);
+
+                    file.write(getPhoneNumber());
+                    file.write(getEmailAddress());
+                    file.write("\n");
+                    file.close();
+                }
+                else {
+                    LogMessageAsError("Phone number is used");
+                }
+            }
+            else {
+                LogMessageAsError("Email is used");
+            }
 //            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 //            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[5]/div/div/div/div[4]/footer/div/div[1]/div/div[1]/div/div/div[1]/div/a"))).click();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -179,8 +188,8 @@ public final class Main {
                 setEmailAddress(GenerateEmailAddress("@mail.com", 69));
             }
             case GMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(69, 324));
-                setEmailAddress(GenerateEmailAddress("@gmail.com", 69));
+                setPhoneNumber(GeneratePhoneNumber(71, 324));
+                setEmailAddress(GenerateEmailAddress("@gmail.com", 72));
             }
             case HOTMAIL -> {
                 setPhoneNumber(GeneratePhoneNumber(69, 324));
