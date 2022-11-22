@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public final class Util {
     public static String GeneratePhoneNumber(int seed, int AreaCode) {
-        int p = 7999793;
+        int p = 7999993;
         int offset = 69420;
         int a = ((offset + seed) % (p - 1)) + 1;
 
