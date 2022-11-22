@@ -47,7 +47,7 @@ public final class Util {
 
     public static void LogMessageAsError(String message) {
         System.out.print("\033[41m" + " ERROR!  " + "\033[0m" + " ");
-        System.out.println(message);
+        System.out.println("\033[0;91m" + message + "\033[0m");
     }
 
     public static void LogMessageAsInfo(String message) {
