@@ -82,7 +82,7 @@ public final class Main {
         LogMessage("Setting up Gecko Driver (Firefox)");
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false)
-                                .addPreference("media.volume_scale", "0.0"));
+                .addPreference("media.volume_scale", "0.0"));
     }
 
     public static void FirstAndLastNameFieldInput(WebElement fName, WebElement lName) {
@@ -113,34 +113,19 @@ public final class Main {
         final String siete = Character.toString(message.charAt(6));
         final String ocho = Character.toString(message.charAt(7));
         final String neuve = Character.toString(message.charAt(8));
-        final String diaz = Character.toString(message.charAt(9));
+        final String dies = Character.toString(message.charAt(9));
 
         LogMessageAsInfo("Entering Phone Numbed: \"" + getPhoneNumber() + "\"");
         PhoneNumberInputField.click();
         PhoneNumberInputField.sendKeys("(");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(uno);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(dos);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(tres);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(cuatro);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(cinco);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(seis);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(siete);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(ocho);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(neuve);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
-        PhoneNumberInputField.sendKeys(diaz);
+
+        for (int i = 0; i < 10; ++i) {
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
+            PhoneNumberInputField.sendKeys(Character.toString(message.charAt(i)));
+        }
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
 
-        assert Objects.equals(PhoneNumberInputField.getText(), "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+diaz);
+        assert Objects.equals(PhoneNumberInputField.getText(), "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+dies);
     }
 
     //getters and setters
