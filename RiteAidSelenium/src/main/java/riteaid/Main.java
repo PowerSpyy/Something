@@ -23,9 +23,9 @@ public final class Main {
     private static final String Password = "Fewa123!";
     public static final WebDriver driver = geckoDriver(true);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         //setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
-        //resetInfo(); //doesn't work yet
+        resetInfo(EmailEndings.GMAIL); //doesn't work yet
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         driver.get("https://www.riteaid.com/signup");
@@ -137,8 +137,9 @@ public final class Main {
         PhoneNumberInputField.sendKeys(neuve);
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(diaz);
-
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
+
+        assert PhoneNumberInputField.getText() == "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+diaz;
     }
 
     //getters and setters
@@ -176,27 +177,29 @@ public final class Main {
         return Password;
     }
 
+    //remember to change seed and area code
     public static void resetInfo(EmailEndings ending) throws Exception {
+        LogMessage("Reset Email and Phone Number");
         switch (ending) {
             case MAIL -> {
-                //setPhoneNumber(GeneratePhoneNumber());
-                //setEmailAddress(GenerateEmailAddress("@mail.com"));
+                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setEmailAddress(GenerateEmailAddress("@mail.com", 69));
             }
             case GMAIL -> {
-                //setPhoneNumber(GeneratePhoneNumber());
-                //setEmailAddress(GenerateEmailAddress("@gmail.com"));
+                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setEmailAddress(GenerateEmailAddress("@gmail.com", 69));
             }
             case HOTMAIL -> {
-                //setPhoneNumber(GeneratePhoneNumber());
-                //setEmailAddress(GenerateEmailAddress("@hotmail.com"));
+                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setEmailAddress(GenerateEmailAddress("@hotmail.com", 69));
             }
             case YAHOO -> {
-                //setPhoneNumber(GeneratePhoneNumber());
-                //setEmailAddress(GenerateEmailAddress("@yahoo.com"));
+                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setEmailAddress(GenerateEmailAddress("@yahoo.com", 69));
             }
             case OUTLOOK -> {
-                //setPhoneNumber(GeneratePhoneNumber());
-                //setEmailAddress(GenerateEmailAddress("@outlook.com"));
+                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setEmailAddress(GenerateEmailAddress("@outlook.com", 69));
             }
             default -> {
                 LogMessageAsError("Cannot find " + ending + " in Enum \"EmailEndings.java\"");
