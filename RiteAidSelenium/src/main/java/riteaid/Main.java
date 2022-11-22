@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import java.io.FileWriter;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +49,12 @@ public final class Main {
         //If the browser/PC is slow, some numbers could get lossy
         PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
         EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
+
+        FileWriter file = new FileWriter("data.txt");
+
+        file.write(getPhoneNumber());
+        file.write(getEmailAddress());
+        file.close();
 
         /* error when SignUpButton.click():
         Exception in thread "main" org.openqa.selenium.ElementNotInteractableException: Element <button id="sign-up-submit-button" class="sign-up-modal__login-btns__signup
