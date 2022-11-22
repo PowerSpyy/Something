@@ -17,12 +17,11 @@ public final class Main {
     private static String PhoneNumber = "8589039139";//first character is ignored for some reason
     private static String EmailAddress = "JohnnyD123@gmail.com"; //temp
     private static final String Password = "Fewa123!";
+    public static final WebDriver driver = geckoDriver();
 
-    public static  void main(String[] args) {
+    public static void main(String[] args) {
         //setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
         //resetInfo(); //doesn't work yet
-        WebDriver driver = geckoDriver();
-
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         driver.get("https://www.riteaid.com/signup");
@@ -38,28 +37,27 @@ public final class Main {
         final WebElement PasswordInputField = driver.findElement(By.xpath("//*[@id=\"signup-password\"]"));
         final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
 
-        FirstNameInputField.sendKeys(getFirstName());
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
-        LastNameInputField.sendKeys(getLastName());
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
+        FirstAndLastNameFieldInput(FirstNameInputField, LastNameInputField);
+
         if (isShouldUseRewardsID())
             OptionalRewardsIDInputField.sendKeys(RewardsID);
         else System.out.println("No Rewards ID was used");
-        PhoneNumberInputField.click();
-        PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
-        EmailInputField.sendKeys(getEmailAddress());
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
-        PasswordInputField.sendKeys(getPassword());
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
 
+        PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
+        EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
+
+        /* error when SignUpButton.click():
+        Exception in thread "main" org.openqa.selenium.ElementNotInteractableException: Element <button id="sign-up-submit-button" class="sign-up-modal__login-btns__signup
+            sign-up-modal__login-btns__signup--submit btn-rounded
+            background-green color-white" type="submit"> could not be scrolled into view
+         */
         SignUpButton.click();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         System.out.println(driver.getTitle());
 
         //end
         try {Thread.sleep(1000);}
-        catch (InterruptedException e) {}
+        catch (InterruptedException ignored) {}
 
         driver.quit();
         System.out.println("Done!");
@@ -68,6 +66,20 @@ public final class Main {
     public static WebDriver geckoDriver() {
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false));
+    }
+
+    public static void FirstAndLastNameFieldInput(WebElement fName, WebElement lName) {
+        fName.sendKeys(getFirstName());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
+        lName.sendKeys(getLastName());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
+    }
+
+    public static void EmailAndPasswordFieldInput(WebElement EmailInputField, WebElement PasswordInputField) {
+        EmailInputField.sendKeys(getEmailAddress());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
+        PasswordInputField.sendKeys(getPassword());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
     }
 
     public static void PhoneNumberSendKeys(WebElement PhoneNumberInputField, String message) {
@@ -94,6 +106,8 @@ public final class Main {
         PhoneNumberInputField.sendKeys(ocho);
         PhoneNumberInputField.sendKeys(neuve);
         PhoneNumberInputField.sendKeys(diaz);
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
     }
 
     //getters and setters
