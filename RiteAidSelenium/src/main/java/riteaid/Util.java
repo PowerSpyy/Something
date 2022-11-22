@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public final class Util {
     public static String GeneratePhoneNumber(long seed, long p, String areaCode) {
         //int p = 9999991;
-        int offset = 69420;
-        long a = ((offset + seed) % (p - 1)) + 1;
+        final int offset = 69420;
+        final long a = ((offset + seed) % (p - 1)) + 1;
 
         ArrayList<Long> integers = new ArrayList<>();
         integers.add(p);
@@ -31,9 +31,9 @@ public final class Util {
     }
 
     public static String GenerateEmailAddress(String ending, int seed) {
-            String[] adj = {"red", "orange", "yellow", "green", "blue", "purple", "black", "white", "happy", "sad", "the"};
+            final String[] adj = {"red", "orange", "yellow", "green", "blue", "purple", "black", "white", "happy", "sad", "the"};
 
-            String[] noun = {"panda", "bird", "dog", "cat", "fish", "cow", "bear", "shirt", "pants", "house", "people", "chicken", "ant", "thing", "coffee", "rock"};
+            final String[] noun = {"panda", "bird", "dog", "cat", "fish", "cow", "bear", "shirt", "pants", "house", "people", "chicken", "ant", "thing", "coffee", "rock"};
 
             assert seed < adj.length * noun.length;
 

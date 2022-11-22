@@ -13,8 +13,8 @@ import java.time.Duration;
 import static riteaid.Util.*;
 
 public final class Main {
-    private static String FirstName = "fewa";
-    private static String LastName = "awef";
+    private static final String FirstName = "fewa";
+    private static final String LastName = "awef";
     private static String RewardsID = "";
     private static boolean ShouldUseRewardsID = false;
     private static String PhoneNumber = "8589039139";//first character is ignored for some reason
@@ -96,16 +96,16 @@ public final class Main {
     }
 
     public static void PhoneNumberSendKeys(WebElement PhoneNumberInputField, String message) {
-        String uno = Character.toString(message.charAt(0));
-        String dos = Character.toString(message.charAt(1));
-        String tres = Character.toString(message.charAt(2));
-        String cuatro = Character.toString(message.charAt(3));
-        String cinco = Character.toString(message.charAt(4));
-        String seis = Character.toString(message.charAt(5));
-        String siete = Character.toString(message.charAt(6));
-        String ocho = Character.toString(message.charAt(7));
-        String neuve = Character.toString(message.charAt(8));
-        String diaz = Character.toString(message.charAt(9));
+        final String uno = Character.toString(message.charAt(0));
+        final String dos = Character.toString(message.charAt(1));
+        final String tres = Character.toString(message.charAt(2));
+        final String cuatro = Character.toString(message.charAt(3));
+        final String cinco = Character.toString(message.charAt(4));
+        final String seis = Character.toString(message.charAt(5));
+        final String siete = Character.toString(message.charAt(6));
+        final String ocho = Character.toString(message.charAt(7));
+        final String neuve = Character.toString(message.charAt(8));
+        final String diaz = Character.toString(message.charAt(9));
 
         LogMessageAsInfo("Entering Phone Numbed: \"" + getPhoneNumber() + "\"");
         PhoneNumberInputField.click();
@@ -138,14 +138,8 @@ public final class Main {
     public static String getFirstName() {
         return FirstName;
     }
-    public static void setFirstName(String firstName) {
-        FirstName = firstName;
-    }
     public static String getLastName() {
         return LastName;
-    }
-    public static void setLastName(String lastName) {
-        LastName = lastName;
     }
     public static String getRewardsID() {
         return RewardsID;
