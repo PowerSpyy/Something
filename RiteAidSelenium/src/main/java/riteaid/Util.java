@@ -3,12 +3,12 @@ package riteaid;
 import java.util.ArrayList;
 
 public final class Util {
-    public static String GeneratePhoneNumber(long seed, long p, String areaCode) {
-        //int p = 9999991;
-        final int offset = 69420;
-        final long a = ((offset + seed) % (p - 1)) + 1;
+    public static String GeneratePhoneNumber(int seed, int AreaCode) {
+        int p = 9999991;
+        int offset = 69420;
+        int a = ((offset + seed) % (p - 1)) + 1;
 
-        ArrayList<Long> integers = new ArrayList<>();
+        ArrayList<Integer> integers = new ArrayList<Integer>();
         integers.add(p);
         integers.add(a);
 
@@ -16,9 +16,9 @@ public final class Util {
             integers.add(integers.get(counter) % integers.get(counter + 1));
         }
 
-        long i = 1;
-        long j = -(integers.get(integers.size() - 3)/integers.get(integers.size() - 2));
-        long tmp;
+        int i = 1;
+        int j = -(integers.get(integers.size() - 3)/integers.get(integers.size() - 2));
+        int tmp;
 
         for (int counter = integers.size() - 4; counter >= 0; --counter) {
             tmp = j;
@@ -26,8 +26,9 @@ public final class Util {
             i = tmp;
         }
 
-        return areaCode + (j + p) % p;
+        Integer thing = (j + p) % p;
 
+        return "" + AreaCode + thing.toString();
     }
 
     public static String GenerateEmailAddress(String ending, int seed) {

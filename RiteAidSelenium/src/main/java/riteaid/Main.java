@@ -168,23 +168,23 @@ public final class Main {
         LogMessage("Reset Email and Phone Number");
         switch (ending) {
             case MAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setPhoneNumber(GeneratePhoneNumber(69, 324));
                 setEmailAddress(GenerateEmailAddress("@mail.com", 69));
             }
             case GMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setPhoneNumber(GeneratePhoneNumber(69, 324));
                 setEmailAddress(GenerateEmailAddress("@gmail.com", 69));
             }
             case HOTMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setPhoneNumber(GeneratePhoneNumber(69, 324));
                 setEmailAddress(GenerateEmailAddress("@hotmail.com", 69));
             }
             case YAHOO -> {
-                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setPhoneNumber(GeneratePhoneNumber(69, 324));
                 setEmailAddress(GenerateEmailAddress("@yahoo.com", 69));
             }
             case OUTLOOK -> {
-                setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
+                setPhoneNumber(GeneratePhoneNumber(69, 324));
                 setEmailAddress(GenerateEmailAddress("@outlook.com", 69));
             }
             default -> {
