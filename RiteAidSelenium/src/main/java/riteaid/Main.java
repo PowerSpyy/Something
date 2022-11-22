@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static riteaid.Util.*;
 
@@ -36,7 +37,6 @@ public final class Main {
         final WebElement PhoneNumberInputField = driver.findElement(By.xpath("//*[@id=\"phone\"]"));
         final WebElement EmailInputField = driver.findElement(By.xpath("//*[@id=\"email\"]"));
         final WebElement PasswordInputField = driver.findElement(By.xpath("//*[@id=\"signup-password\"]"));
-        final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
 
         FirstAndLastNameFieldInput(FirstNameInputField, LastNameInputField);
 
@@ -52,6 +52,9 @@ public final class Main {
             sign-up-modal__login-btns__signup--submit btn-rounded
             background-green color-white" type="submit"> could not be scrolled into view
          */
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
 
         //https://riteaid.com/signup#accountcreated <- is the link when pressed button
         try {
@@ -66,11 +69,12 @@ public final class Main {
 
         //end
         driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
-        driver.quit();
+        //driver.quit();
         LogMessage("Done!");
     }
 
     public static WebDriver geckoDriver() {
+        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "null");
         LogMessage("Setting up Gecko Driver (Firefox)");
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false)
