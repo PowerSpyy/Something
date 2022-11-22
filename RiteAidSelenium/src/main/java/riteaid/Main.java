@@ -21,7 +21,7 @@ public final class Main {
     private static String PhoneNumber = "8589039139";//first character is ignored for some reason
     private static String EmailAddress = "JohnnyD123@gmail.com"; //temp
     private static final String Password = "Fewa123!";
-    public static final WebDriver driver = geckoDriver();
+    public static final WebDriver driver = geckoDriver(true);
 
     public static void main(String[] args) {
         //setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
@@ -44,6 +44,7 @@ public final class Main {
         else LogMessage("No Rewards ID was used");
 
         //@IMPORTANT Sometimes this could fail;
+        //If the browser/PC is slow, some numbers could get lossy
         PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
         EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
 
@@ -69,12 +70,14 @@ public final class Main {
 
         //end
         driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
-        //driver.quit();
         LogMessage("Done!");
+        //driver.quit();
     }
 
-    public static WebDriver geckoDriver() {
-        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "null");
+    public static WebDriver geckoDriver(boolean supressLogFiles) {
+        if (supressLogFiles) System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "null");
+        else LogMessage("Log Messages are enabled");
+
         LogMessage("Setting up Gecko Driver (Firefox)");
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false)
