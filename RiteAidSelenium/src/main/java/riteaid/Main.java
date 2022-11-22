@@ -2,12 +2,15 @@ package riteaid;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
+
+import static riteaid.Util.*;
 
 public final class Main {
     private static String FirstName = "fewa";
@@ -25,9 +28,7 @@ public final class Main {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         driver.get("https://www.riteaid.com/signup");
-
-        String title = driver.getTitle();
-        assert title.contains("Signup");
+        assert driver.getTitle().contains("Signup");
 
         final WebElement FirstNameInputField = driver.findElement(By.xpath("//*[@id=\"fname\"]"));
         final WebElement LastNameInputField = driver.findElement(By.xpath("//*[@id=\"lname\"]"));
@@ -39,10 +40,10 @@ public final class Main {
 
         FirstAndLastNameFieldInput(FirstNameInputField, LastNameInputField);
 
-        if (isShouldUseRewardsID())
-            OptionalRewardsIDInputField.sendKeys(RewardsID);
-        else System.out.println("No Rewards ID was used");
+        if (isShouldUseRewardsID()) OptionalRewardsIDInputField.sendKeys(RewardsID);
+        else LogMessage("No Rewards ID was used");
 
+        //@IMPORTANT Sometimes this could fail;
         PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
         EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
 
@@ -51,34 +52,46 @@ public final class Main {
             sign-up-modal__login-btns__signup--submit btn-rounded
             background-green color-white" type="submit"> could not be scrolled into view
          */
-        SignUpButton.click();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        System.out.println(driver.getTitle());
+
+        //https://riteaid.com/signup#accountcreated <- is the link when pressed button
+        try {
+            SignUpButton.click();
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            LogMessageAsInfo(driver.getTitle());
+        } catch (ElementNotInteractableException ENIE) {
+            LogMessageAsError(ENIE.getMessage());
+        } finally {
+            LogMessage("Finished processing Sign Up button");
+        }
 
         //end
-        try {Thread.sleep(1000);}
-        catch (InterruptedException ignored) {}
-
+        driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
         driver.quit();
-        System.out.println("Done!");
+        LogMessage("Done!");
     }
 
     public static WebDriver geckoDriver() {
+        LogMessage("Setting up Gecko Driver (Firefox)");
         WebDriverManager.firefoxdriver().setup();
-        return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false));
+        return new FirefoxDriver(new FirefoxOptions().addPreference("geo.enabled", false)
+                                .addPreference("media.volume_scale", "0.0"));
     }
 
     public static void FirstAndLastNameFieldInput(WebElement fName, WebElement lName) {
         fName.sendKeys(getFirstName());
+        LogMessageAsInfo("Entering First Name field: \"" + getFirstName() + "\"");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         lName.sendKeys(getLastName());
+        LogMessageAsInfo("Entering Last Name field: \"" + getLastName() + "\"");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
     }
 
     public static void EmailAndPasswordFieldInput(WebElement EmailInputField, WebElement PasswordInputField) {
         EmailInputField.sendKeys(getEmailAddress());
+        LogMessageAsInfo("Entering Email Address: \"" + getEmailAddress() + "\"");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         PasswordInputField.sendKeys(getPassword());
+        LogMessageAsInfo("Entering Password: \"" + getPassword() + "\"");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
     }
 
@@ -94,17 +107,28 @@ public final class Main {
         String neuve = Character.toString(message.charAt(8));
         String diaz = Character.toString(message.charAt(9));
 
+        LogMessageAsInfo("Entering Phone Numbed: \"" + getPhoneNumber() + "\"");
         PhoneNumberInputField.click();
         PhoneNumberInputField.sendKeys("(");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(uno);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(dos);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(tres);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(cuatro);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(cinco);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(seis);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(siete);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(ocho);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(neuve);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
         PhoneNumberInputField.sendKeys(diaz);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
@@ -174,7 +198,7 @@ public final class Main {
                 //setEmailAddress(GenerateEmailAddress("@outlook.com"));
             }
             default -> {
-                System.out.println("Cannot find " + ending + " in Enum \"EmailEndings.java\"");
+                LogMessageAsError("Cannot find " + ending + " in Enum \"EmailEndings.java\"");
                 throw new Exception("Not present");
             }
         }

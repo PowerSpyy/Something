@@ -39,4 +39,19 @@ public final class Util {
 
             return adj[seed % adj.length] + noun[seed / adj.length] + ending;
     }
+
+    public static void LogMessage(String message) {
+        System.out.print("\033[42m" + " CLIENT  " + "\033[0m" + " ");
+        System.out.println(message);
+    }
+
+    public static void LogMessageAsError(String message) {
+        System.out.print("\033[41m" + " ERROR!  " + "\033[0m" + " ");
+        System.out.println(message);
+    }
+
+    public static void LogMessageAsInfo(String message) {
+        System.out.print("\033[46m" + " INFO    " + "\033[0m" + " ");
+        System.out.println(message);
+    }
 }
