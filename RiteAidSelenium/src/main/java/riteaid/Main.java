@@ -1,10 +1,9 @@
 package riteaid;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -50,10 +49,11 @@ public final class Main {
         PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
         EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
 
-        FileWriter file = new FileWriter("data.txt");
+        FileWriter file = new FileWriter("./RiteAidSelenium/src/main/data/data.txt", true);
 
         file.write(getPhoneNumber());
         file.write(getEmailAddress());
+        file.write("\n");
         file.close();
 
         /* error when SignUpButton.click():
@@ -61,13 +61,18 @@ public final class Main {
             sign-up-modal__login-btns__signup--submit btn-rounded
             background-green color-white" type="submit"> could not be scrolled into view
          */
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-        final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
+        WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
 
         //https://riteaid.com/signup#accountcreated <- is the link when pressed button
+        //https://www.riteaid.com/ra-dashboard
         try {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("window.scrollBy(0, 500)", "");
+            Thread.sleep(4000);
             SignUpButton.click();
+//            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+//            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[5]/div/div/div/div[4]/footer/div/div[1]/div/div[1]/div/div/div[1]/div/a"))).click();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             LogMessageAsInfo(driver.getTitle());
         } catch (ElementNotInteractableException ENIE) {
@@ -92,25 +97,27 @@ public final class Main {
                 .addPreference("media.volume_scale", "0.0"));
     }
 
+    public static WebDriver chromeDriver() {
+        LogMessage("Setting up Chrome Driver");
+        WebDriverManager.chromedriver().setup();
+        return new ChromeDriver(new ChromeOptions());
+    }
+
     public static void FirstAndLastNameFieldInput(WebElement fName, WebElement lName) {
         fName.sendKeys(getFirstName());
         LogMessageAsInfo("Entering First Name field: \"" + getFirstName() + "\"");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         lName.sendKeys(getLastName());
         LogMessageAsInfo("Entering Last Name field: \"" + getLastName() + "\"");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
     }
 
     public static void EmailAndPasswordFieldInput(WebElement EmailInputField, WebElement PasswordInputField) {
         EmailInputField.sendKeys(getEmailAddress());
         LogMessageAsInfo("Entering Email Address: \"" + getEmailAddress() + "\"");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
         PasswordInputField.sendKeys(getPassword());
         LogMessageAsInfo("Entering Password: \"" + getPassword() + "\"");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
     }
 
-    public static void PhoneNumberSendKeys(WebElement PhoneNumberInputField, String message) {
+    public static void PhoneNumberSendKeys(WebElement PhoneNumberInputField, String message) throws InterruptedException {
         final String uno = Character.toString(message.charAt(0));
         final String dos = Character.toString(message.charAt(1));
         final String tres = Character.toString(message.charAt(2));
@@ -127,10 +134,9 @@ public final class Main {
         PhoneNumberInputField.sendKeys("(");
 
         for (int i = 0; i < 10; ++i) {
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(100));
+            Thread.sleep(50);
             PhoneNumberInputField.sendKeys(Character.toString(message.charAt(i)));
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
 
         assert Objects.equals(PhoneNumberInputField.getText(), "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+dies);
     }
@@ -145,14 +151,8 @@ public final class Main {
     public static String getRewardsID() {
         return RewardsID;
     }
-    public static void setRewardsID(String rewardsID) {
-        RewardsID = rewardsID;
-    }
     public static boolean isShouldUseRewardsID() {
         return ShouldUseRewardsID;
-    }
-    public static void setShouldUseRewardsID(boolean shouldUseRewardsID) {
-        ShouldUseRewardsID = shouldUseRewardsID;
     }
     public static String getPhoneNumber() {
         return PhoneNumber;
