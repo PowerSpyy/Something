@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static riteaid.Util.*;
@@ -40,7 +41,7 @@ public final class Main {
 
         FirstAndLastNameFieldInput(FirstNameInputField, LastNameInputField);
 
-        if (isShouldUseRewardsID()) OptionalRewardsIDInputField.sendKeys(RewardsID);
+        if (isShouldUseRewardsID()) OptionalRewardsIDInputField.sendKeys(getRewardsID());
         else LogMessage("No Rewards ID was used");
 
         //@IMPORTANT Sometimes this could fail;
@@ -139,7 +140,7 @@ public final class Main {
         PhoneNumberInputField.sendKeys(diaz);
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(200));
 
-        assert PhoneNumberInputField.getText() == "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+diaz;
+        assert Objects.equals(PhoneNumberInputField.getText(), "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+diaz);
     }
 
     //getters and setters
