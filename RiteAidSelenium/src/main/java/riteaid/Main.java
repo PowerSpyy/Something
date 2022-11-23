@@ -8,6 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -18,16 +19,28 @@ public final class Main {
     private static final String LastName = "awef";
     private static String RewardsID = "";
     private static boolean ShouldUseRewardsID = false;
-    private static String PhoneNumber = "8589039139";//first character is ignored for some reason
-    private static String EmailAddress = "JohnnyD123@gmail.com"; //temp
+    private static String PhoneNumber = "8589039139";
+    private static String EmailAddress = "JohnnyD123@gmail.com";
     private static final String Password = "Fewa123!";
     public static final WebDriver driver = geckoDriver(true);
 
-    public static void main(String[] args) throws Exception {
-        //setPhoneNumber(GeneratePhoneNumber(69420, 9999991, "324"));
-        resetInfo(EmailEndings.GMAIL); //doesn't work yet
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+    public static int seedA = 0;
+    public static int seedB = 0;
+    public static int AreaCode = 324;
+    public static String ending = "@gmail.com";
+    public static final JavascriptExecutor js = (JavascriptExecutor) driver;
+    public static FileWriter file;
+    public static WebElement thing;
 
+    static {
+        try {
+            file = new FileWriter("./RiteAidSelenium/src/main/data/data.txt", true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
         driver.get("https://www.riteaid.com/signup");
         assert driver.getTitle().contains("Signup");
 
@@ -38,52 +51,17 @@ public final class Main {
         final WebElement EmailInputField = driver.findElement(By.xpath("//*[@id=\"email\"]"));
         final WebElement PasswordInputField = driver.findElement(By.xpath("//*[@id=\"signup-password\"]"));
 
-        FirstAndLastNameFieldInput(FirstNameInputField, LastNameInputField);
-
-        if (isShouldUseRewardsID()) OptionalRewardsIDInputField.sendKeys(getRewardsID());
-        else LogMessage("No Rewards ID was used");
-
-        //@IMPORTANT Sometimes this could fail;
-        //If the browser/PC is slow, some numbers could get lossy
-        PhoneNumberSendKeys(PhoneNumberInputField, PhoneNumber);
-        EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
-
-        /* error when SignUpButton.click():
-        Exception in thread "main" org.openqa.selenium.ElementNotInteractableException: Element <button id="sign-up-submit-button" class="sign-up-modal__login-btns__signup
-            sign-up-modal__login-btns__signup--submit btn-rounded
-            background-green color-white" type="submit"> could not be scrolled into view
-         */
-
         final WebElement SignUpButton = driver.findElement(By.xpath("//*[@id=\"sign-up-submit-button\"]"));
+
+        setPhoneNumber(GeneratePhoneNumber(seedA, AreaCode));
+        setEmailAddress(GenerateEmailAddress(ending, seedB));
 
         //https://riteaid.com/signup#accountcreated <- is the link when pressed button
         //https://www.riteaid.com/ra-dashboard
         try {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("window.scrollBy(0, 500)", "");
-            Thread.sleep(4000);
-            SignUpButton.click();
-            Thread.sleep(4000);
-            if (driver.findElements(By.xpath("/html/body/div[1]/div/div[4]/div/div[1]/div[2]/div[2]/div/div/div/form/div[2]/div[1]/div[1]/div[5]/div/label")).size() == 0) {
-                if (driver.findElements(By.xpath("/html/body/div[1]/div/div[4]/div/div[1]/div[2]/div[2]/div/div/div/form/div[2]/div[1]/div[1]/div[3]/div/label")).size() == 0) {
-                    FileWriter file = new FileWriter("./RiteAidSelenium/src/main/data/data.txt", true);
-
-                    file.write(getPhoneNumber());
-                    file.write(getEmailAddress());
-                    file.write("\n");
-                    file.close();
-                }
-                else {
-                    LogMessageAsError("Phone number is used");
-                }
+            for (int i = 0; i < 100; ++i) {
+                createAccount(FirstNameInputField, LastNameInputField, PhoneNumberInputField, EmailInputField, PasswordInputField, SignUpButton, OptionalRewardsIDInputField);
             }
-            else {
-                LogMessageAsError("Email is used");
-            }
-//            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-//            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[5]/div/div/div/div[4]/footer/div/div[1]/div/div[1]/div/div/div[1]/div/a"))).click();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-            LogMessageAsInfo(driver.getTitle());
         } catch (ElementNotInteractableException ENIE) {
             LogMessageAsError(ENIE.getMessage());
         } finally {
@@ -91,9 +69,92 @@ public final class Main {
         }
 
         //end
-        driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
         LogMessage("Done!");
         //driver.quit();
+    }
+
+    public static void createAccount(WebElement FirstNameInputField, WebElement LastNameInputField, WebElement PhoneNumberInputField, WebElement EmailInputField, WebElement PasswordInputField, WebElement SignUpButton, WebElement OptionalRewardsIDInputField) throws IOException, InterruptedException {
+        FirstAndLastNameFieldInput(FirstNameInputField, LastNameInputField);
+
+        if (isShouldUseRewardsID()) OptionalRewardsIDInputField.sendKeys(getRewardsID());
+        else LogMessage("No Rewards ID was used");
+
+        PhoneNumberSendKeys(PhoneNumberInputField, getPhoneNumber());
+        EmailAndPasswordFieldInput(EmailInputField, PasswordInputField);
+
+        js.executeScript("window.scrollBy(0, 500)", "");
+        Thread.sleep(500);
+        SignUpButton.click();
+        Thread.sleep(500);
+
+        js.executeScript("window.scrollBy(0, -200)", "");
+        Thread.sleep(500);
+
+        while (!GoodEmail()) {
+            ++seedB;
+            setEmailAddress(GenerateEmailAddress(ending, seedB));
+            EmailInputField.clear();
+            EmailInputField.sendKeys(getEmailAddress());
+            LogMessageAsInfo("Entering Email Address: \"" + getEmailAddress() + "\"");
+
+            js.executeScript("window.scrollBy(0, 300)", "");
+            Thread.sleep(500);
+            SignUpButton.click();
+            Thread.sleep(500);
+            js.executeScript("window.scrollBy(0, -300)", "");
+            Thread.sleep(2000);
+
+            LogMessage(String.valueOf(seedA));
+            LogMessage(String.valueOf(seedB));
+        }
+
+        js.executeScript("window.scrollBy(0, -800)", "");
+        Thread.sleep(500);
+
+        while (!GoodPhoneNumber()) {
+            ++seedA;
+            setPhoneNumber(GeneratePhoneNumber(seedA, AreaCode));
+            PhoneNumberInputField.clear();
+            PhoneNumberSendKeys(PhoneNumberInputField, getPhoneNumber());
+
+            js.executeScript("window.scrollBy(0, 800)", "");
+            Thread.sleep(1000);
+            SignUpButton.click();
+            Thread.sleep(500);
+            js.executeScript("window.scrollBy(0, -800)", "");
+            Thread.sleep(1000);
+
+            LogMessage(String.valueOf(seedA));
+            LogMessage(String.valueOf(seedB));
+        }
+
+        Thread.sleep(5000);
+
+        file.write(getPhoneNumber());
+        file.write(getEmailAddress());
+        file.write("\n");
+        file.close();
+        ++seedA;
+        ++seedB;
+        setPhoneNumber(GeneratePhoneNumber(seedA, AreaCode));
+        setEmailAddress(GenerateEmailAddress(ending, seedB));
+        Thread.sleep(1000);
+        thing = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div/div/div/div[1]/header/nav/div[2]/div[3]/button"));
+        thing.click();
+        Thread.sleep(1000);
+        thing = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div/div/div/div[3]/div/div/div/div/div[8]/div/div"));
+        thing.click();
+
+        LogMessageAsInfo(driver.getTitle());
+    }
+
+    public static boolean GoodEmail() {
+        return (driver.findElements(By.xpath("/html/body/div[1]/div/div[4]/div/div[1]/div[2]/div[2]/div/div/div/form/div[2]/div[1]/div[1]/div[5]/div/label")).size() == 0)
+                && (driver.findElements(By.xpath("//*[@id=\"emailError\"]")).size() == 0);
+    }
+
+    public static boolean GoodPhoneNumber() {
+        return driver.findElements(By.xpath("/html/body/div[1]/div/div[4]/div/div[1]/div[2]/div[2]/div/div/div/form/div[2]/div[1]/div[1]/div[3]/div/label")).size() == 0;
     }
 
     public static WebDriver geckoDriver(boolean supressLogFiles) {
@@ -127,18 +188,7 @@ public final class Main {
     }
 
     public static void PhoneNumberSendKeys(WebElement PhoneNumberInputField, String message) throws InterruptedException {
-        final String uno = Character.toString(message.charAt(0));
-        final String dos = Character.toString(message.charAt(1));
-        final String tres = Character.toString(message.charAt(2));
-        final String cuatro = Character.toString(message.charAt(3));
-        final String cinco = Character.toString(message.charAt(4));
-        final String seis = Character.toString(message.charAt(5));
-        final String siete = Character.toString(message.charAt(6));
-        final String ocho = Character.toString(message.charAt(7));
-        final String neuve = Character.toString(message.charAt(8));
-        final String dies = Character.toString(message.charAt(9));
-
-        LogMessageAsInfo("Entering Phone Numbed: \"" + getPhoneNumber() + "\"");
+        LogMessageAsInfo("Entering Phone Number: \"" + getPhoneNumber() + "\"");
         PhoneNumberInputField.click();
         PhoneNumberInputField.sendKeys("(");
 
@@ -146,8 +196,6 @@ public final class Main {
             Thread.sleep(50);
             PhoneNumberInputField.sendKeys(Character.toString(message.charAt(i)));
         }
-
-        assert Objects.equals(PhoneNumberInputField.getText(), "("+uno+dos+tres+") "+cuatro+cinco+seis+"-"+siete+ocho+neuve+dies);
     }
 
     //getters and setters
@@ -177,36 +225,5 @@ public final class Main {
     }
     public static String getPassword() {
         return Password;
-    }
-
-    //remember to change seed and area code
-    public static void resetInfo(EmailEndings ending) throws Exception {
-        LogMessage("Reset Email and Phone Number");
-        switch (ending) {
-            case MAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(69, 324));
-                setEmailAddress(GenerateEmailAddress("@mail.com", 69));
-            }
-            case GMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(71, 324));
-                setEmailAddress(GenerateEmailAddress("@gmail.com", 72));
-            }
-            case HOTMAIL -> {
-                setPhoneNumber(GeneratePhoneNumber(69, 324));
-                setEmailAddress(GenerateEmailAddress("@hotmail.com", 69));
-            }
-            case YAHOO -> {
-                setPhoneNumber(GeneratePhoneNumber(69, 324));
-                setEmailAddress(GenerateEmailAddress("@yahoo.com", 69));
-            }
-            case OUTLOOK -> {
-                setPhoneNumber(GeneratePhoneNumber(69, 324));
-                setEmailAddress(GenerateEmailAddress("@outlook.com", 69));
-            }
-            default -> {
-                LogMessageAsError("Cannot find " + ending + " in Enum \"EmailEndings.java\"");
-                throw new Exception("Not present");
-            }
-        }
     }
 }
