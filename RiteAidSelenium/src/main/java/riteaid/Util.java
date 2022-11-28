@@ -32,7 +32,7 @@ public final class Util {
     public static String GenerateEmailAddress(String ending, int seed) {
             final String[] adj = {"lol", "yes", "why", "what", "where", "haha", "not", "iam", "the", "this", "that", "your", "quick", "strong", "blind", "poor", "awesome"};
 
-            final String[] noun = {"person", "tiger", "ant", "thing", "coffee", "rock", "fire", "one", "life"};
+            final String[] noun = {"things"};
 
             assert seed < adj.length * noun.length;
 
